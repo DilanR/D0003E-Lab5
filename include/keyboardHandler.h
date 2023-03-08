@@ -11,7 +11,7 @@
 #define EXIT 'e'
 
 
-void catchInput(void);
+void *catchInput(void *ptr);
 
 void sendNorth(void);
 void sendSouth(void);
