@@ -2,7 +2,7 @@
 
 //shit should be mostly done, just need to make small adjustments
 
-void receiveSignal(Bridge *self, int signal) {
+void receiveSignal(controller *self, int signal) {
     
     int northQueue = signal & (northArrival << 1);
     int northEntry = signal & (northEntryS << 1);
@@ -51,23 +51,21 @@ void sendSignal (controller *self, int signal) {
 void lightController (controller *self, bool direction) {
     //flip this shit
     bool output;
-    if (lastDirection == 0) {
+    if (direction == 0) {
         output = SGreenNRed;
-        break;
-    } else if(lastDirection == 1) {
+    } else if(direction == 1) {
         output = SGreenNRed;
-        break;
     }
 
 }
 
-void bridgeHandler (controller *self) {
+void bridgeHandler (controller *self, int arg) {
     //TODO: support to remove starvation from directions
-    if (self->northQueue > 0 && self->southQueue == 0){
+    if (self->queueN > 0 && self->queueS == 0){
         
         if(self->carsOnBridge == 0) {
             
-            if (self->LastDirection == south)
+            if (self->lastDirection == south)
 
                 lightController(self, south);    
             
@@ -75,11 +73,11 @@ void bridgeHandler (controller *self) {
         //TODO: if we we need all red then add else for bothRed here
     }
 
-    else if (self->southQueue > 0 && self->northQueue == north){
+    else if (self->queueS > 0 && self->queueN == north){
         
         if(self->carsOnBridge == 0) {
             
-            if (self->LastDirection == north)
+            if (self->lastDirection == north)
 
                 lightController(self, north);    
             
@@ -96,7 +94,7 @@ void bridgeHandler (controller *self) {
                 lightController(self, north);
             } TODO: if support for both needed keep this
             */
-            else if (self->lastDirection == north) {
+            if (self->lastDirection == north) {
                 lightController(self, south);
             }
             else {
@@ -114,6 +112,7 @@ void bridgeHandler (controller *self) {
         }
 
     }
+
 
     printAt(self->queueN, 0);
     printAt(self->carsOnBridge, 2);
