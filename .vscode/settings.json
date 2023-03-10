@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "tinytimber.h": "c",
+    "bridge.h": "c",
+    "lcd.h": "c",
+    "usart.h": "c",
+    "light.h": "c",
+    "car.h": "c"
+  }
+}

@@ -1,5 +1,4 @@
 #include "include/keyboardHandler.h"
-#include <stdio.h>
 
 // TODO update display and dispatch car
 void sendNorth() {
@@ -12,7 +11,7 @@ void sendSouth() {
 
 }
 
-void catchInput() {
+void *catchInput(void *ptr) {
     while (1) {
         int i = getchar();
 
