@@ -35,7 +35,6 @@ void writePort(u_int8_t str){
 }
 
 void *readPort(void *arg){
-    u_int8_t light;
     
     while(1){
         
@@ -55,19 +54,30 @@ void *readPort(void *arg){
 
 }
 
-void drive(void *arg){
-    u_int8_t direction = (u_int8_t)arg;
-    usleep(driveTime);
-    writePort(direction);
-    usleep(waitTime);
-    writePort(3);
+void drive(void* arg){
+    carsOnBridge++;
+    sleep(5);
+    carsOnBridge--;
+
+    pthread_exit(NULL);
 }
 
-void letCarsDrive(void *arg){
-    u_int8_t direction = (u_int8_t)arg;
-    while(1){
-        sem_wait(&semArrive);
-        drive(direction);
-        sem_post(&semDepart);
+void letCarsDrive(void* arg){
+
+    while (1) {
+        if (queue[North] > 0 && light == northGsouthR) {
+            queue[North]--;
+            pthread_create(&car, NULL, drive, NULL);
+
+            writePort(1);
+            sleep(1);
+        } else if (queue[South] > 0 && light == southGnorthR) {
+            queue[South]--;
+            pthread_create(&car, NULL, drive, NULL);
+
+            writePort(3);
+            sleep(1);
     }
+    
+
 }

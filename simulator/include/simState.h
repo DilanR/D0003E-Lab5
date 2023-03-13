@@ -17,27 +17,28 @@
 #define northGsouthR 1
 #define southGnorthR 2
 
-#define driveTime 5000000
-#define waitTime  1000000
-
 static struct termios settingsSimState;
 
 int com1;
 
 uint64_t direction;
 uint64_t queue[3];
-unsigned int lights;
+u_int8_t light;
+
+
 
 sem_t semArrive;
 sem_t semDepart;
 
+int carsOnBridge;
+pthread_t car;
 pthread_t mutexState;
 pthread_t mutexId;
 
 void initSimState(void);
 void writePort(u_int8_t str);
 void *readPort(void *arg);
-void drive(void *arg);
-void letCarsDrive(void *arg);
+void drive(void* arg);
+void letCarsDrive(void* arg);
 
 #endif
