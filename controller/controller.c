@@ -1,4 +1,5 @@
 #include "include/controller.h"
+#include "include/GUI.h"
 
 //shit should be mostly done, just need to make small adjustments
 
@@ -114,9 +115,12 @@ void bridgeHandler (controller *self, int arg) {
     }
 
 
+    UPDATEGUI(self->gui, *self->states);
+    /*
     printAt(self->queueN, 0);
     printAt(self->carsOnBridge, 2);
     printAt(self->queueS, 4);
+    */
 
 }
 
