@@ -13,8 +13,8 @@
 
 void *catchInput(void *ptr);
 
-void sendNorth(void);
-void sendSouth(void);
+void sendNorth(int arg);
+void sendSouth(int arg);
 
 
 #endif

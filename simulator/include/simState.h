@@ -35,11 +35,9 @@ pthread_t mutexState;
 pthread_t mutexId;
 
 void initSimState(void);
-void *arrivalW(void *arg);
-void arrival(uint64_t direction);
-void *departureNS(void *arg);
-void *carsOnBridge(void *arg);
+void writePort(u_int8_t str);
 void *readPort(void *arg);
-
+void drive(void *arg);
+void letCarsDrive(void *arg);
 
 #endif

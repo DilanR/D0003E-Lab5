@@ -3,6 +3,9 @@
 #include "stdbool.h"
 #include "TinyTimber.h"
 #include "GUI.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 
 //TODO: Petition to change structure to just one controller file 

@@ -30,34 +30,44 @@ void simState_init(void){
     
 }
 
-void *arrivalW(void *arg){
-    
-    uint64_t tempDir;
-    
-    sem_wait(&semArrive);
-    pthread_mutex_lock(&mutexState);
-    tempDir = direction;
-    pthread_mutex_unlock(&mutexState);
-    arrival(tempDir);
-    return NULL;
-
-}
-
-void arrival(uint64_t direction){
-    sem_wait(&semArrive);
-    queue[direction]++;
-    sem_post(&semDepart);
-}
-
-void *departureNS(void *arg){
-    departure();
-    return NULL;
-}
-
-void *carsOnBridge(void *arg){
-
-    return NULL;
+void writePort(u_int8_t str){
+    write(com1, str, 1);
 }
 
 void *readPort(void *arg){
+    u_int8_t light;
+    
+    while(1){
+        
+        read(com1, &light, 1);
+    
+        if(light == 0){
+            light = 0;
+        } else if(light == 1){
+            light = 1;
+        } else if(light == 2){
+            light = 2;
+        } else if (light == 3){
+            light = 3;
+        }
+            
+    }
+
+}
+
+void drive(void *arg){
+    u_int8_t direction = (u_int8_t)arg;
+    usleep(driveTime);
+    writePort(direction);
+    usleep(waitTime);
+    writePort(3);
+}
+
+void letCarsDrive(void *arg){
+    u_int8_t direction = (u_int8_t)arg;
+    while(1){
+        sem_wait(&semArrive);
+        drive(direction);
+        sem_post(&semDepart);
+    }
 }

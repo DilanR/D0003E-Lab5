@@ -2,15 +2,14 @@
 #include "include/simState.h"
 
 // TODO update display and dispatch car
-void sendNorth() {
+void sendNorth(int arg) {
     printf("north");
-    
+    writePort(arg);
 }
 
-void sendSouth() {
+void sendSouth(int arg) {
     printf("south");
-
-
+    writePort(arg);
 }
 
 void *catchInput(void *ptr) {
@@ -20,9 +19,9 @@ void *catchInput(void *ptr) {
         if (i == EXIT) {
             exit(EXIT_SUCCESS);
         } else if (i == ENQUEUNORTH) {
-            sendNorth();
+            sendNorth(0);
         } else if (i == ENQUEUSOUTH) {
-            sendSouth();
+            sendSouth(2);
         }
     }
 }
