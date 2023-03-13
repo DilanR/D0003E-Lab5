@@ -1,7 +1,7 @@
 #ifndef _USART_
 #define _USART_
 #include <avr/io.h>
-#include "Tinytimber.h"
+#include "TinyTimber.h"
 #include "controller.h"
 
 typedef struct{

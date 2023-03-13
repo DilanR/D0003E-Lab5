@@ -24,7 +24,7 @@ typedef struct controller {
     int queueS;
     direction lastDirection; //0 = north, 1 = south
     int state;
-    int states[3] = {queueN, carsOnBridge, queueS};
+    //int states[3] = {queueN, carsOnBridge, queueS};
 } controller;
 
 

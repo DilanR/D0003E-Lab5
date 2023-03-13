@@ -1,6 +1,6 @@
-#include "include/USART.h":
+#include "include/USART.h"
 
-void USARt_Init (usigned int ubrr){
+void USART_Init (unsigned int ubrr){
     // Set baud rate
     UBRR0H = (unsigned char)(ubrr>>8);
     UBRR0L = (unsigned char)ubrr;

@@ -115,12 +115,10 @@ void bridgeHandler (controller *self, int arg) {
     }
 
 
-    UPDATEGUI(self->gui, *self->states);
-    /*
+    //UPDATEGUI(self->gui, *self->states);
     printAt(self->queueN, 0);
     printAt(self->carsOnBridge, 2);
     printAt(self->queueS, 4);
-    */
 
 }
 

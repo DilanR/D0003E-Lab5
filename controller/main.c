@@ -4,7 +4,7 @@
 #include "include/LCD.h"
 #include "include/controller.h"
 #include "include/GUI.h"
-#include "include/USART.h":
+#include "include/USART.h"
 
 static GUI gui = INITGUI();
 static controller cont = INITCONTROLLER(&gui);
@@ -16,7 +16,7 @@ void interruptInit() {
 }
 
 void interrupts(controller *self, int arg){
-    UPDATEGUI(&gui, cont.states);
+    //UPDATEGUI(&gui, cont.states);
 }
 int main(){
     sei();

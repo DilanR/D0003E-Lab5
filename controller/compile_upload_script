@@ -1,0 +1,6 @@
+avr-gcc -g -Os -mmcu=atmega169 -c main.c controller.c light.c TinyTimber.c USART.c GUI.c LCD.c
+avr-gcc -g -mmcu=atmega169 main.o controller.o light.o TinyTimber.o USART.o GUI.o LCD.o -o main.elf
+avr-objcopy -j .text -j .data -O ihex main.elf main.hex
+avr-size --format=avr --mcu=atmega169 main.elf 
+
+sudo avrdude -c avrisp2 -p m169 -P usb -b 19200 -U flash:w:main.hex

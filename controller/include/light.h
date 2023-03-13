@@ -1,5 +1,6 @@
 #ifndef _LIGHT_
 #define _LIGHT_
+#include "TinyTimber.h"
 
 
 typedef struct light {
