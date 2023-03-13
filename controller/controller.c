@@ -1,8 +1,10 @@
 #include "include/controller.h"
+#include "include/USART.h"
 
 //shit should be mostly done, just need to make small adjustments
 
 void receiveSignal(controller *self, int signal) {
+    signal = USARTRECEIVE(self->usart);
     
     int northQueue = signal & (northArrival << 1);
     int northEntry = signal & (northEntryS << 1);

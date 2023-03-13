@@ -15,8 +15,8 @@ typedef struct{
 
 void USART_Init(unsigned int ubrr);
 unsigned char USART_Receive(USART *self, int arg);
-void USART_Transmit (USART *self, unsigned int signal);
+void USART_Transmit (USART *self, unsigned char signal);
 
-//#define USARTRECEIVE(usart) 
+#define USARTRECEIVE(usart) SYNC(usart, USART_Receive, 0)
 
 #endif

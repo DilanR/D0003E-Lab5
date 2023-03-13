@@ -11,16 +11,15 @@ void USART_Init (unsigned int ubrr){
 }
 
 
-void USART_Receive(USART *self, int arg){
+unsigned char USART_Receive(USART *self, int arg){
     // Wait for data to be received
     while(!(UCSRA & (1<<RXC)));
 
-    unsigned int signal = UDR;
+    return UDR;
     // Get and return received data from buffer
-    ASYNC(self, receiveSignal, signal);
 }
 
-void USART_Transmit (USART *self, int signal) {
+void USART_Transmit(USART *self, unsigned char signal) {
     //xd fuck USART 
     while (!(UCSRA & (1 << UDRE)));
 

@@ -14,7 +14,7 @@ void initSimState(void){
     sem_init(&semDepart, 0, 0);
 
 
-    com1 = open("/dev/ttyACM0", O_RDWR);
+    com1 = open("/dev/ttyS0", O_RDWR);
 
     if (com1 == -1){
         perror("open_port: Unable to open /dev/ttyACM0 - ");
