@@ -52,16 +52,17 @@ void sendSignal (controller *self, int signal) {
 void lightController (controller *self, bool direction) {
     //flip this shit
     bool output;
-    if (direction == 0) {
+    if (direction == south) {
         output = SGreenNRed;
-    } else if(direction == 1) {
+    } else if(direction == north) {
         output = SGreenNRed;
     }
-
+    return output;
 }
 
 void bridgeHandler (controller *self, int arg) {
     //TODO: support to remove starvation from directions
+    
     if (self->queueN > 0 && self->queueS == 0){
         
         if(self->carsOnBridge == 0) {
@@ -105,11 +106,11 @@ void bridgeHandler (controller *self, int arg) {
 
         //below wont work but its a start need to integrage time support
         else if (self->state == northGreen && self->carsOnBridge == 0) {
-            lightController(self, south);
+            sendSignal(self, south);
         }
 
         else if (self->state == southGreen && self->carsOnBridge == 0) {
-            lightController(self, north);
+            sendSignal(self, north);
         }
 
     }

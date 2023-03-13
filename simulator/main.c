@@ -5,7 +5,9 @@
 
 int main() {
 
-
+    initSimState();
+    initGUI();
+    initKeyboardHandler();
 
     pthread_t keyboardThread, displayThread;
 

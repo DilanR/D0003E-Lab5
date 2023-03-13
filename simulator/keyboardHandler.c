@@ -1,13 +1,15 @@
 #include "include/keyboardHandler.h"
+#include "include/simState.h"
 
 // TODO update display and dispatch car
 void sendNorth() {
     printf("north");
-
+    
 }
 
 void sendSouth() {
     printf("south");
+
 
 }
 

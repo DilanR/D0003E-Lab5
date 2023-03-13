@@ -19,12 +19,12 @@ void simState_init(void){
     cfsetispeed(&settingsSimState, B9600);
     cfsetospeed(&settingsSimState, B9600);
 
-	settingsSimState.c_cflag &= ~CSIZE; 	// Clear char size
-	settingsSimState.c_cflag |= CS5;	    // set 5 bit char size
-	settingsSimState.c_cflag &= ~CSTOPB;    // 1 stop bit
-	settingsSimState.c_cflag &= ~PARENB;    // no parity
-	settingsSimState.c_cflag |= CREAD;	    // Enable receive
-	settingsSimState.c_cc[VMIN] =  1;       // Read at least 1 char
+	// settingsSimState.c_cflag &= ~CSIZE; 	// Clear char size
+	// settingsSimState.c_cflag |= CS5;	    // set 5 bit char size
+	// settingsSimState.c_cflag &= ~CSTOPB;    // 1 stop bit
+	// settingsSimState.c_cflag &= ~PARENB;    // no parity
+	// settingsSimState.c_cflag |= CREAD;	    // Enable receive
+	// settingsSimState.c_cc[VMIN] =  1;       // Read at least 1 char
 
     lights = bothRed;
     

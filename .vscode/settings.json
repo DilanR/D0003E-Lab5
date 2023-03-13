@@ -8,6 +8,8 @@
     "car.h": "c",
     "__mutex_base": "c",
     "gui.h": "c",
-    "controller.h": "c"
+    "controller.h": "c",
+    "simstate.h": "c",
+    "fcntl.h": "c"
   }
 }

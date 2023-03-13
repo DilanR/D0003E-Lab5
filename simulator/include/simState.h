@@ -17,6 +17,9 @@
 #define northGsouthR 1
 #define southGnorthR 2
 
+#define driveTime 5000000
+#define waitTime  1000000
+
 static struct termios settingsSimState;
 
 int com1;
