@@ -5,6 +5,8 @@
     "lcd.h": "c",
     "usart.h": "c",
     "light.h": "c",
-    "car.h": "c"
+    "car.h": "c",
+    "__mutex_base": "c",
+    "gui.h": "c"
   }
 }

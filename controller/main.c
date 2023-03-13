@@ -13,4 +13,10 @@ int main(){
     interruptInit();
     USART_Init(MYUBRR);
 
+    
+    controller c = initController();
+    USART usart = initUSART(&c);
+    INSTALL(&usart, USART_Receive, IRQ_USART0_RX)
+
+
 }
