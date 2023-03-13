@@ -1,8 +1,9 @@
-#ifndef simState.h
-#define simState.h
+#ifndef _SIMSTATE_
+#define _SIMSTATE_
 
 #include <stdio.h>
 #include <stdio.h>
+#include <sys/types.h>
 #include <termios.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -22,22 +23,14 @@
 
 static struct termios settingsSimState;
 
-int com1;
-
-uint64_t direction;
-uint64_t queue[3];
-unsigned int lights;
-
-sem_t semArrive;
-sem_t semDepart;
-
-pthread_t mutexState;
-pthread_t mutexId;
+u_int64_t queue[3];
 
 void initSimState(void);
 void writePort(u_int8_t str);
 void *readPort(void *arg);
-void drive(void *arg);
-void letCarsDrive(void *arg);
+void drive(u_int8_t arg);
+void letCarsDrive(u_int8_t arg);
+u_int8_t getLights(void);
+int getCom(void);
 
 #endif

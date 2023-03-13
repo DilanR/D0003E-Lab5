@@ -1,5 +1,5 @@
-#ifndef simGUI.h
-#define simGUI.h
+#ifndef _SIMGUI_
+#define _SIMGUI_
 
 #include <stdio.h>
 #include <stdio.h>

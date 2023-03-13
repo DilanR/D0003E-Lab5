@@ -1,6 +1,13 @@
 #include "include/simState.h"
+#include <sys/types.h>
+
+static u_int8_t lights;
+static int com1;
+sem_t semArrive;
+sem_t semDepart;
 
 void simState_init(void){
+
 
     sem_init(&semArrive, 0, 0);
     sem_init(&semDepart, 0, 0);
@@ -31,11 +38,12 @@ void simState_init(void){
 }
 
 void writePort(u_int8_t str){
-    write(com1, str, 1);
+    write(com1, &str, 1);
 }
 
 void *readPort(void *arg){
-    u_int8_t light;
+    
+    u_int8_t light = getLights();
     
     while(1){
         
@@ -55,16 +63,24 @@ void *readPort(void *arg){
 
 }
 
-void drive(void *arg){
-    u_int8_t direction = (u_int8_t)arg;
+u_int8_t getLights() {
+    return lights;
+}
+
+int getCom(){
+    return com1;
+}
+
+void drive(u_int8_t arg){
+    u_int8_t direction = arg;
     usleep(driveTime);
     writePort(direction);
     usleep(waitTime);
     writePort(3);
 }
 
-void letCarsDrive(void *arg){
-    u_int8_t direction = (u_int8_t)arg;
+void letCarsDrive(u_int8_t arg){
+    u_int8_t direction = arg;
     while(1){
         sem_wait(&semArrive);
         drive(direction);

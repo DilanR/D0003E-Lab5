@@ -1,25 +1,29 @@
 #include "include/simGUI.h"
+#include "include/simState.h"
+#include <bits/pthreadtypes.h>
 
 
+pthread_mutex_t mutexState;
 
 void print(void){
 	pthread_mutex_lock(&mutexState);
-	switch (lights) {
+	switch (getLights()) {
 		case bothRed:
-            ClEAR();
-			printf("North:  %d RED,     Bridge: %d,     South: %d RED\n", queue[1], queue[0], queue[2]);
+            clear_terminal();
+			printf("North:  %d RED,     Bridge: %d,     South: %d RED\n", (int)queue[1], (int)queue[0], (int)queue[2]);
 			printf("\n");
 			break;
 		
 		case northGsouthR:
-            ClEAR();
-			printf("North: %d GREEN,   Bridge: %d,     South: %d RED\n", queue[1], queue[0], queue[2]);
+            clear_terminal();
+			printf("North: %d GREEN,   Bridge: %d,     South: %d RED\n", (int)queue[1], (int)queue[0], (int)queue[2]);
 			printf("\n");
 			break;
 			
 		case southGnorthR:
-            ClEAR();
-			printf("North: %d RED,     Bridge: %d,     South: %d GREEN\n", queue[1], queue[0], queue[2]);
+            clear_terminal();
+			printf("North: %d GREEN,   Bridge: %d,     South: %d RED\n", (int)queue[1], (int)queue[0], (int)queue[2]);
+			printf("North: %d RED,     Bridge: %d,     South: %d GREEN\n", (int)queue[1], (int)queue[0], (int)queue[2]);
 			printf("\n");
 			break;
 	}
@@ -27,7 +31,7 @@ void print(void){
 }
 
 void setting(void){
-	tcsetattr(com1, TCSANOW, &settingsGUI);
+	tcsetattr(getCom(), TCSANOW, &settingsGUI);
 }
 
 void clear_terminal(void){
@@ -37,3 +41,4 @@ void clear_terminal(void){
 void initGUI(void){
 	setting();
 }
+
