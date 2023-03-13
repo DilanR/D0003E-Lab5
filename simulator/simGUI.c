@@ -7,6 +7,7 @@ pthread_mutex_t mutexState;
 
 void print(void){
 	pthread_mutex_lock(&mutexState);
+    int *queue = getQueues();
 	switch (getLights()) {
 		case bothRed:
             clear_terminal();

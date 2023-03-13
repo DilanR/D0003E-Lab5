@@ -3,10 +3,11 @@
 
 static u_int8_t lights;
 static int com1;
+static int queue[3];
 sem_t semArrive;
 sem_t semDepart;
 
-void simState_init(void){
+void initSimState(void){
 
 
     sem_init(&semArrive, 0, 0);
@@ -42,9 +43,8 @@ void writePort(u_int8_t str){
 }
 
 void *readPort(void *arg){
-    
     u_int8_t light = getLights();
-    
+
     while(1){
         
         read(com1, &light, 1);
@@ -67,23 +67,39 @@ u_int8_t getLights() {
     return lights;
 }
 
-int getCom(){
+int getCom() {
     return com1;
 }
 
-void drive(u_int8_t arg){
-    u_int8_t direction = arg;
-    usleep(driveTime);
-    writePort(direction);
-    usleep(waitTime);
-    writePort(3);
+int *getQueues() {
+    return queue;
 }
 
-void letCarsDrive(u_int8_t arg){
-    u_int8_t direction = arg;
-    while(1){
-        sem_wait(&semArrive);
-        drive(direction);
-        sem_post(&semDepart);
+void *drive(void* arg){
+    queue[Bridge]++;
+    sleep(5);
+    queue[Bridge]--;
+
+    pthread_exit(NULL);
+}
+
+void *letCarsDrive(void* arg){
+
+    while (1) {
+        pthread_t car;
+
+        if (queue[North] > 0 && getLights() == northGsouthR) {
+            queue[North]--;
+            pthread_create(&car, NULL, &drive, NULL);
+
+            writePort(1);
+            sleep(1);
+        } else if (queue[South] > 0 && getLights() == southGnorthR) {
+            queue[South]--;
+            pthread_create(&car, NULL, &drive, NULL);
+
+            writePort(3);
+            sleep(1);
+        }
     }
 }
