@@ -2,12 +2,14 @@
 #define _USART_
 #include <avr/io.h>
 #include "Tinytimber.h"
+#include "controller.h"
 
 typedef struct{
     Object super;
+    controller *c;
 }USART;
 
-#define INITUSART() {initObject()}
+#define INITUSART(c) {initObject(), c}
 
 #define FOSC 8000000UL // Clock Speed
 #define BAUD 9600

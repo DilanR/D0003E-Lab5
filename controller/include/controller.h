@@ -40,7 +40,7 @@ typedef struct controller {
 #define southRed     3
 
 
-#define initController(gui) {initObject(), gui, 0, 0, 0, both, bothRed}
+#define INITCONTROLLER(gui) {initObject(), gui, 0, 0, 0, both, bothRed}
 #define bothRed 0b1010 //this only if no direction needs to be implemented
 #define sRedNGreen 0b1001
 #define SGreenNRed 0b0110

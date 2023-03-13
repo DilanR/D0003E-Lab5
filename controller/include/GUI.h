@@ -12,6 +12,6 @@ typedef struct{
 
 void updateGUI(GUI *self, int *arg);
 
-#define UPDATEGUI(gui, arg) SYNC(gui, updateGUI, arg)
+#define UPDATEGUI(gui, arg) ASYNC(gui, updateGUI, arg)
 
 #endif
