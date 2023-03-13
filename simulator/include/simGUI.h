@@ -10,10 +10,13 @@
 #include <semaphore.h>
 #include "simState.h"
 
-
+#define CLEAR "\033[2J"
 void initGUI(void);
 void printGUI(void);
-void settingGUI(void);
+void setting(void);
+void clear_terminal(void);
+
+
 
 static struct termios settingsGUI;
 

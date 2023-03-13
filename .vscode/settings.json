@@ -7,6 +7,7 @@
     "light.h": "c",
     "car.h": "c",
     "__mutex_base": "c",
-    "gui.h": "c"
+    "gui.h": "c",
+    "controller.h": "c"
   }
 }

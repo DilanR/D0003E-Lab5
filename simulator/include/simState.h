@@ -19,7 +19,7 @@
 
 static struct termios settingsSimState;
 
-int port;
+int com1;
 
 uint64_t direction;
 uint64_t queue[3];

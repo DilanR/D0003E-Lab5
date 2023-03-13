@@ -4,11 +4,11 @@
 #include "include/LCD.h"
 #include "include/controller.h"
 #include "include/GUI.h"
-#include "include/USART.h"
+//#include "include/USART.h"
 
 static GUI gui = INITGUI();
 static controller cont = INITCONTROLLER(&gui);
-static USART usart = INITUSART(&cont);
+//static USART usart = INITUSART(&cont);
 
 void interruptInit() {
     EIFR  = 0xC0;
@@ -22,7 +22,7 @@ int main(){
     sei();
     LCDInit();
     interruptInit();
-    USART_Init(MYUBRR);
+    //USART_Init(MYUBRR);
 
     INSTALL(&usart, USART_Receive, IRQ_USART0_RX);
 

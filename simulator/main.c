@@ -1,8 +1,11 @@
 #include "include/keyboardHandler.h"
 #include <pthread.h>
-
+#include "include/simGUI.h"
+#include "include/simState.h"
 
 int main() {
+
+
 
     pthread_t keyboardThread, displayThread;
 
