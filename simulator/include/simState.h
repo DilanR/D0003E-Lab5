@@ -30,7 +30,7 @@ u_int8_t light;
 sem_t semArrive;
 sem_t semDepart;
 
-int carsOnBridge;
+
 pthread_t car;
 pthread_t mutexState;
 pthread_t mutexId;

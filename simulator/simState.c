@@ -55,9 +55,9 @@ void *readPort(void *arg){
 }
 
 void drive(void* arg){
-    carsOnBridge++;
+    queue[Bridge]++;
     sleep(5);
-    carsOnBridge--;
+    queue[Bridge]--;
 
     pthread_exit(NULL);
 }
