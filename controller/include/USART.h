@@ -18,5 +18,6 @@ unsigned char USART_Receive(USART *self, int arg);
 void USART_Transmit (USART *self, unsigned char signal);
 
 #define USARTRECEIVE(usart) SYNC(usart, USART_Receive, 0)
+#define USARTTRANSMIT(usart, signal) ASYNC(usart, USART_Transmit, signal)
 
 #endif

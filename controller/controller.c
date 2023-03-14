@@ -92,11 +92,9 @@ void bridgeHandler (controller *self, int arg) {
         
         if (self->state == bothRed && self->carsOnBridge == 0) {
             
-            /*
             if(self->lastDirection == south || self->lastDirection == both) {
                 lightController(self, north);
-            } TODO: if support for both needed keep this
-            */
+            }// TODO: if support for both needed keep this
             if (self->lastDirection == north) {
                 lightController(self, south);
             }
@@ -107,11 +105,11 @@ void bridgeHandler (controller *self, int arg) {
 
         //below wont work but its a start need to integrage time support
         else if (self->state == northGreen && self->carsOnBridge == 0) {
-            sendSignal(self, south);
+            USARTTRANSMIT(self->usart, south);
         }
 
         else if (self->state == southGreen && self->carsOnBridge == 0) {
-            sendSignal(self, north);
+            USARTTRANSMIT(self->usart, north);
         }
 
     }

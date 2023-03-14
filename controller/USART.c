@@ -1,4 +1,5 @@
 #include "include/USART.h"
+#include "include/LCD.h"
 
 void USART_Init (unsigned int ubrr){
     // Set baud rate
@@ -23,5 +24,6 @@ void USART_Transmit(USART *self, unsigned char signal) {
     //xd fuck USART 
     while (!(UCSRA & (1 << UDRE)));
 
+    UDR = 0x0;
     UDR = signal;
 }
