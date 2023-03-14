@@ -1,0 +1,86 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/avr-gcc",
+      "-g",
+      "-Os",
+      "-mmcu=atmega169",
+      "-c",
+      "main.c"
+    ],
+    "directory": "/home/dilanr/Kurser/Kurser/D0003E/Lab5/controller",
+    "file": "/home/dilanr/Kurser/Kurser/D0003E/Lab5/controller/main.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/avr-gcc",
+      "-g",
+      "-Os",
+      "-mmcu=atmega169",
+      "-c",
+      "controller.c"
+    ],
+    "directory": "/home/dilanr/Kurser/Kurser/D0003E/Lab5/controller",
+    "file": "/home/dilanr/Kurser/Kurser/D0003E/Lab5/controller/controller.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/avr-gcc",
+      "-g",
+      "-Os",
+      "-mmcu=atmega169",
+      "-c",
+      "light.c"
+    ],
+    "directory": "/home/dilanr/Kurser/Kurser/D0003E/Lab5/controller",
+    "file": "/home/dilanr/Kurser/Kurser/D0003E/Lab5/controller/light.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/avr-gcc",
+      "-g",
+      "-Os",
+      "-mmcu=atmega169",
+      "-c",
+      "TinyTimber.c"
+    ],
+    "directory": "/home/dilanr/Kurser/Kurser/D0003E/Lab5/controller",
+    "file": "/home/dilanr/Kurser/Kurser/D0003E/Lab5/controller/TinyTimber.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/avr-gcc",
+      "-g",
+      "-Os",
+      "-mmcu=atmega169",
+      "-c",
+      "USART.c"
+    ],
+    "directory": "/home/dilanr/Kurser/Kurser/D0003E/Lab5/controller",
+    "file": "/home/dilanr/Kurser/Kurser/D0003E/Lab5/controller/USART.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/avr-gcc",
+      "-g",
+      "-Os",
+      "-mmcu=atmega169",
+      "-c",
+      "GUI.c"
+    ],
+    "directory": "/home/dilanr/Kurser/Kurser/D0003E/Lab5/controller",
+    "file": "/home/dilanr/Kurser/Kurser/D0003E/Lab5/controller/GUI.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/avr-gcc",
+      "-g",
+      "-Os",
+      "-mmcu=atmega169",
+      "-c",
+      "LCD.c"
+    ],
+    "directory": "/home/dilanr/Kurser/Kurser/D0003E/Lab5/controller",
+    "file": "/home/dilanr/Kurser/Kurser/D0003E/Lab5/controller/LCD.c"
+  }
+]

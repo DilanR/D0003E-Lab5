@@ -2,20 +2,26 @@
 
 void USART_Init (unsigned int ubrr){
     // Set baud rate
-    UBRR0H = (unsigned char)(ubrr>>8);
-    UBRR0L = (unsigned char)ubrr;
+    UBRRH = (unsigned char)(ubrr>>8);
+    UBRRL = (unsigned char)ubrr;
     // Enable receiver and transmitter
-    UCSR0B = (1<<RXEN0)|(1<<TXEN0);
+    UCSRB = (1<<RXEN)|(1<<TXEN);
     // Set frame format: 8data, 2stop bit
-    UCSR0C = (1<<USBS0)|(3<<UCSZ00);
+    UCSRC = (1<<USBS)|(3<<UCSZ0);
 }
 
 
-unsigned char USART_Receive(void){
+unsigned char USART_Receive(USART *self, int arg){
     // Wait for data to be received
-    while(!(UCSR0A & (1<<RXC0)));
+    while(!(UCSRA & (1<<RXC)));
 
-    unsigned int signal = UDR0;
+    return UDR;
     // Get and return received data from buffer
-    ASYNC(self, receiveSignal, signal);
+}
+
+void USART_Transmit(USART *self, unsigned char signal) {
+    //xd fuck USART 
+    while (!(UCSRA & (1 << UDRE)));
+
+    UDR = signal;
 }

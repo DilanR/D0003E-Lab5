@@ -1,9 +1,10 @@
 #include "include/controller.h"
-#include "include/GUI.h"
+#include "include/USART.h"
 
 //shit should be mostly done, just need to make small adjustments
 
 void receiveSignal(controller *self, int signal) {
+    signal = USARTRECEIVE(self->usart);
     
     int northQueue = signal & (northArrival << 1);
     int northEntry = signal & (northEntryS << 1);
@@ -43,13 +44,13 @@ void rmCar (controller *self, int arg) {
 
 void sendSignal (controller *self, int signal) {
     //xd fuck USART 
-    while (!(USR0A & (1 << UDRE0)));
+    while (!(UCSRA & (1 << UDRE)));
 
 
-    USR0D = signal;
+    UDR = signal;
 }
 
-void lightController (controller *self, bool direction) {
+bool lightController (controller *self, bool direction) {
     //flip this shit
     bool output;
     if (direction == south) {
