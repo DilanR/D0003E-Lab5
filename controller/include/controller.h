@@ -13,11 +13,6 @@
 //TODO: Petition to change structure to just one controller file 
 //      Does there need to be support for no direction? 
 //      In that case make direction enum 
-typedef enum {
-    north,
-    south,
-    both
-} direction;
 
 typedef struct controller {
     Object super;
@@ -26,12 +21,13 @@ typedef struct controller {
     int carsOnBridge;
     int queueN;
     int queueS;
-    direction lastDirection; //0 = north, 1 = south
+    int carsPassed;
+    int direction; //0 = north, 1 = south
     int state;
     //int states[3] = {queueN, carsOnBridge, queueS};
 } controller;
 
-#define INITCONTROLLER(gui, usart_out) {initObject(), gui, usart_out, 0, 0, 0, both, bothRed}
+#define INITCONTROLLER(gui, usart_out) {initObject(), gui, usart_out, 0, 0, 0, 0, both, bothRed}
 
 bool lightController (controller *self, bool direction);
 void receiveSignal(controller *self, int signal);
@@ -48,8 +44,8 @@ void bridgeHandler(controller *self, int arg);
 
 
 #define northGreen   0
-#define northRed     1
-#define southGreen   2
+#define southGreen   1
+#define red          2
 #define southRed     3
 
 

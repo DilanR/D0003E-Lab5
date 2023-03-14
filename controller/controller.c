@@ -46,94 +46,139 @@ void receiveSignal(controller *self, int signal) {
 
 void rmCar (controller *self, int arg) {
 	self->carsOnBridge--;
-		ASYNC(self->gui, printNorthQueue, self->queueN);
-		ASYNC(self->gui, printCarsOnBridge, self->carsOnBridge);
-		ASYNC(self->gui, printSouthQueue, self->queueS);
-
-}
-
-
-bool lightController (controller *self, bool direction) {
-	//flip this shit
-	bool output;
-	if (direction == south) {
-		output = SGreenNRed;
-		} else if(direction == north) {
-		output = SGreenNRed;
-	}
-	return output;
-}
-
-void bridgeHandler (controller *self, int arg) {
-	//TODO: support to remove starvation from directions
-	
-	if (self->queueN > 0 && self->queueS == 0){
-		
-		if(self->carsOnBridge == 0) {
-			
-			if (self->lastDirection == south)
-
-			lightController(self, north);
-			
-		}
-		//TODO: if we we need all red then add else for bothRed here
-	}
-
-	else if (self->queueS > 0 && self->queueN == north){
-		
-		if(self->carsOnBridge == 0) {
-			
-			if (self->lastDirection == north)
-
-			lightController(self, south);
-			
-		}
-		//TODO: if we we need all red then add else for bothRed here
-	}
-
-	else {
-		
-		if (self->state == bothRed && self->carsOnBridge == 0) {
-			
-			if(self->lastDirection == south || self->lastDirection == both) {
-				lightController(self, north);
-			}// TODO: if support for both needed keep this
-			if (self->lastDirection == north) {
-				lightController(self, south);
-			}
-			else {
-				lightController(self, north);
-			}
-		}
-
-		//below wont work but its a start need to integrage time support
-		else if (self->state == northGreen && self->carsOnBridge == 0) {
-			USARTTRANSMIT(self->usart_out, southGreen);
-		}
-
-		else if (self->state == southGreen && self->carsOnBridge == 0) {
-			USARTTRANSMIT(self->usart_out, northGreen);
-		}
-
-	}
-
-
-	//UPDATEGUI(self->gui, *self->states);
-	/*
-	ASYNC(self->gui, printNorthQueue, self->queueN);
-	ASYNC(self->gui, printCarsOnBridge, self->carsOnBridge);
-	ASYNC(self->gui, printSouthQueue, self->queueS);
-	*/
-}
-
-
-
-//holds queues and receives status of lights, sends signal for car enter bridge
-
-void initController(controller *self, int arg) {
+    self->carsPassed++;
 	ASYNC(self->gui, printNorthQueue, self->queueN);
 	ASYNC(self->gui, printCarsOnBridge, self->carsOnBridge);
 	ASYNC(self->gui, printSouthQueue, self->queueS);
 
-	
 }
+
+void setRed (controller *self) {
+    self->carsPassed = 0;
+    self->direction = red;
+    ASYNC(self->usart_out, USART_Transmit, self->direction);
+}
+
+void setLightGreen(controller *self, int arg) {
+    self->direction = arg;
+    ASYNC(self->usart_out, USART_Transmit, self->direction);
+}
+
+void lightsNorth(controller *self) {
+    if(queueN > 0 && (queueS == 0 || carsPassed < 5)) {
+        setLightGreen(self, sRedNGreen);
+        AFTER(waitTime, self, lightsNorth, 0);
+    }
+    else if(self->carsOnBridge > 0 && self->queueS > 0 && self->state == northGreen) {
+        
+        setRed(self);
+        AFTER(driveTime, self, lightsSouth, 0);
+    }
+
+    else {
+        setRed(self);
+        AFTER(driveTime, self, lightsSouth, 0);
+    }
+}
+
+void lightsSouth(controller *self) {
+    if(queueS > 0 && (queueN == 0 || carsPassed < 5)) {
+        setLightGreen(self, sGreenNRed);
+        AFTER(waitTime, self, lightsSouth, 0);
+    }
+    else if(self->carsOnBridge > 0 && self->queueN > 0 && self->state == southGreen) {
+        
+        setRed(self);
+        AFTER(driveTime, self, lightsNorth, 0);
+    }
+
+    else {
+        setRed(self);
+        AFTER(driveTime, self, lightsNorth, 0);
+    }
+}
+
+// bool lightController (controller *self, bool direction) {
+// 	//flip this shit
+// 	bool output;
+// 	if (direction == south) {
+// 		output = SGreenNRed;
+// 		} else if(direction == north) {
+// 		output = SGreenNRed;
+// 	}
+// 	return output;
+// }
+
+// void bridgeHandler (controller *self, int arg) {
+// 	//TODO: support to remove starvation from directions
+	
+// 	if (self->queueN > 0 && self->queueS == 0){
+		
+// 		if(self->carsOnBridge == 0) {
+			
+// 			if (self->lastDirection == south)
+
+// 			lightController(self, north);
+			
+// 		}
+// 		//TODO: if we we need all red then add else for bothRed here
+// 	}
+
+// 	else if (self->queueS > 0 && self->queueN == north){
+		
+// 		if(self->carsOnBridge == 0) {
+			
+// 			if (self->lastDirection == north)
+
+// 			lightController(self, south);
+			
+// 		}
+// 		//TODO: if we we need all red then add else for bothRed here
+// 	}
+
+// 	else {
+		
+// 		if (self->state == bothRed && self->carsOnBridge == 0) {
+			
+// 			if(self->lastDirection == south || self->lastDirection == both) {
+// 				lightController(self, north);
+// 			}// TODO: if support for both needed keep this
+// 			if (self->lastDirection == north) {
+// 				lightController(self, south);
+// 			}
+// 			else {
+// 				lightController(self, north);
+// 			}
+// 		}
+
+// 		//below wont work but its a start need to integrage time support
+// 		else if (self->state == northGreen && self->carsOnBridge == 0) {
+// 			USARTTRANSMIT(self->usart_out, southGreen);
+// 		}
+
+// 		else if (self->state == southGreen && self->carsOnBridge == 0) {
+// 			USARTTRANSMIT(self->usart_out, northGreen);
+// 		}
+
+// 	}
+
+
+// 	//UPDATEGUI(self->gui, *self->states);
+// 	/*
+// 	ASYNC(self->gui, printNorthQueue, self->queueN);
+// 	ASYNC(self->gui, printCarsOnBridge, self->carsOnBridge);
+// 	ASYNC(self->gui, printSouthQueue, self->queueS);
+// 	*/
+// }
+
+
+
+// //holds queues and receives status of lights, sends signal for car enter bridge
+
+// void initController(controller *self, int arg) {
+// 	ASYNC(self->gui, printNorthQueue, self->queueN);
+// 	ASYNC(self->gui, printCarsOnBridge, self->carsOnBridge);
+// 	ASYNC(self->gui, printSouthQueue, self->queueS);
+
+	
+// }
