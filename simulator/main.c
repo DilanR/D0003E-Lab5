@@ -30,18 +30,6 @@ pthread_t serialInThread;
 pthread_t serialOutThread;
 pthread_t simThread;
 
-void sendNorth(int arg) {
-    printf("north");
-    queue[North] += 1;
-    writePort(&arg);    
-}
-
-void sendSouth(int arg) {
-    printf("south");
-    queue[South] += 1;
-    writePort(&arg);
-}
-
 void *catchInput(void *ptr) {
     while (1) {
         int i = getchar();
@@ -49,9 +37,11 @@ void *catchInput(void *ptr) {
         if (i == EXIT) {
             exit(EXIT_SUCCESS);
         } else if (i == ENQUEUNORTH) {
-            sendNorth(0b0001);
+            car = 0b10001;
+            queue[North] += 1;
         } else if (i == ENQUEUSOUTH) {
-            sendSouth(0b0100);
+            car = 0b10100;
+            queue[South] += 1;
         }
     }
 }
@@ -130,7 +120,7 @@ void writeToPort(void *arg){
     if(((car >> 2) & 1) == 1){
         queue[South]++;
     }
-    if(((car & 3) & 1) == 1){
+    if(((car >> 3) & 1) == 1){
         queue[South]--;
     }
     if(com1Temp == -1){
