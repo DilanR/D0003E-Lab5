@@ -13,23 +13,29 @@ void receiveSignal(controller *self, int signal) {
 
 
     if (northQueue) {
-        self->queueN++;
+        self->queueN ++;
+        ASYNC(self->gui, printNorthQueue, self->queueN);
     }
 
     if (northEntry) {
         self->queueN--;
         self->carsOnBridge++;
+        ASYNC(self->gui, printNorthQueue, self->queueN);
+        ASYNC(self->gui, printCarsOnBridge, self->carsOnBridge);
         AFTER(driveTime, self, rmCar, 0);
         //TODO: add AFTER call to remove car from bridge
     }
 
     if (southQueue) {
         self->queueS++;
+        ASYNC(self->gui, printSouthQueue, self->queueS);
     }
 
     if (southEntry) {
         self->queueS--;
         self->carsOnBridge++;
+        ASYNC(self->gui, printNorthQueue, self->queueN);
+        ASYNC(self->gui, printCarsOnBridge, self->carsOnBridge);
         AFTER(driveTime, self, rmCar, 0);
         //TODO: add AFTER call to remove car from bridge
     }
@@ -40,6 +46,7 @@ void receiveSignal(controller *self, int signal) {
 
 void rmCar (controller *self, int arg) {
     self->carsOnBridge--;
+    ASYNC(self->gui, updateGUI, self->queueN, self->carsOnBridge, self->queueS)
 }
 
 void sendSignal (controller *self, int signal) {
