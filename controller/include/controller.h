@@ -43,10 +43,10 @@ void bridgeHandler(controller *self, int arg);
 #define southEntryS  3
 
 
-#define northGreen   0
-#define southGreen   1
-#define red          2
-#define southRed     3
+#define red          0
+#define northGreen   1
+#define southGreen   2
+
 
 
 #define bothRed 0b1010 //this only if no direction needs to be implemented

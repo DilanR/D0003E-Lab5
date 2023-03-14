@@ -14,14 +14,17 @@ void USART_Init (unsigned int ubrr){
 
 
 
-unsigned char USART_Receive(USART_in *self, int arg){
+void USART_Receive(USART_in *self, int arg){
     // Wait for data to be received
     while(!(UCSR0A & (1<<RXC0)));
-	printAt(1,1);
+	uint8_t data = UDR0;
+
     //USART_Transmit(self, UDR0);
 	USART_Transmit(self->usart_out, UDR0);
 	RECEIVESIGNAL(self->cont,UDR0);
-    return UDR0;
+
+    //ASYNC(self->cont, USART_Receive, data);
+    //return UDR0;
     // Get and return received data from buffer
 }
 
