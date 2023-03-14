@@ -9,6 +9,9 @@ u_int64_t direction;
 u_int64_t queue[3];
 u_int8_t light;
 u_int8_t car; 
+int northLight;
+int southLight;
+
 
 u_int8_t output, input;
 
@@ -20,6 +23,12 @@ pthread_t carT;
 pthread_t mutexState;
 pthread_t mutexId;
 pthread_mutex_t mutex;
+
+pthread_t keyboardThread;
+pthread_t guiThread;
+pthread_t serialInThread;
+pthread_t serialOutThread;
+pthread_t simThread;
 
 void sendNorth(int arg) {
     printf("north");
@@ -40,9 +49,9 @@ void *catchInput(void *ptr) {
         if (i == EXIT) {
             exit(EXIT_SUCCESS);
         } else if (i == ENQUEUNORTH) {
-            sendNorth(0);
+            sendNorth(0b0001);
         } else if (i == ENQUEUSOUTH) {
-            sendSouth(2);
+            sendSouth(0b0100);
         }
     }
 }
@@ -50,7 +59,7 @@ void *catchInput(void *ptr) {
 
 void *printGUI(void *arg){
 	while (1) {
-
+        /*
 		printf("CARS & LIGHTS");
 		if(light == bothRed){
 			printf("North:  %d RED,     Bridge: %d,     South: %d RED\n", queue[1], queue[0], queue[2]);
@@ -61,6 +70,14 @@ void *printGUI(void *arg){
 		else if(light == southGnorthR){
 			printf("North: %d RED,     Bridge: %d,     South: %d GREEN\n", queue[1], queue[0], queue[2]);
 		}
+        */
+        printf("Nort Queue: %d\n", queue[1]);
+        printf("South Queue: %d\n", queue[2]);
+        printf("Bridge: %d\n", queue[0]);
+        printf("North Light: %d\n", northLight);
+        printf("South Light: %d\n", southLight);
+
+
 
 		sleep(1);
 	}
@@ -95,7 +112,8 @@ void initSimState(void){
 
     pthread_mutex_init(&mutex, NULL);
 
-    light = bothRed;
+    northLight = 0;
+    southLight = 0;
     
 }
 
@@ -162,15 +180,30 @@ void *drive(void* arg){
 void *letCarsDrive(void* arg) {
 
     while (1) {
-        if (queue[North] > 0 && light == northGsouthR) {
-            queue[North]--;
-            pthread_create(&carT, NULL, &drive, NULL);
+        if(light){
+            if((light &) == 1){
+                northLight = 1;
+            }
+            if(((light >> 1) & 1) == 1){
+                northLight = 0;
+            }
+            if(((light >> 2) & 1) == 1){
+                southLight = 1;
+            }
+            if(((light >> 3) & 1) == 1){
+                southLight = 0;
+            }
+        }
+
+        if (queue[North] > 0 && northLight == 1) {
+            // queue[North]--;
+            // pthread_create(&carT, NULL, &drive, NULL);
 
             car = 0b0010;
 
-        } else if (queue[South] > 0 && light == southGnorthR) {
-            queue[South]--;
-            pthread_create(&carT, NULL, &drive, NULL);
+        } else if (queue[South] > 0 && southLight == 1) {
+            // queue[South]--;
+            // pthread_create(&carT, NULL, &drive, NULL);
 
             car = 0b0100;
 
