@@ -39,7 +39,7 @@ static struct termios settingsSimState;
 
 void getLights(void);
 void getQueue(void);
-void initSimState(void);
+void initSimState(char *argv[]);
 void *writePort(void *arg);
 void writeToPort(void *arg);
 void *readPort(void *arg);
