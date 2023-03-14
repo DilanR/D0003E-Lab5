@@ -4,12 +4,17 @@
 #include "include/LCD.h"
 #include "include/controller.h"
 #include "include/GUI.h"
-#include "include/USART.h"
+#include "include/USART_in.h"
+#include "include/USART_out.h"
 
 static GUI gui = INITGUI();
-static USART usart = INITUSART();
-static controller cont = INITCONTROLLER(&gui, &usart);
 
+
+static USART_out usart_out = INITUSARTOUT();
+
+static controller cont = INITCONTROLLER(&gui, &usart_out);
+
+static USART_in usart = INITUSARTIN(&cont, &usart_out);
 void interruptInit() {
     EIFR  = 0xC0;
     EIMSK = 0xC0;
@@ -17,13 +22,15 @@ void interruptInit() {
 
 void interrupts(controller *self, int arg){
     //UPDATEGUI(&gui, cont.states);
-    SYNC(&cont, bridgeHandler, 0);
+    ASYNC(&cont, bridgeHandler, 0);
 }
 int main(){
     sei();
     LCDInit();
     interruptInit();
     USART_Init(MYUBRR);
+    //initController(0);
+	//printAt(1,1);
 
 
     INSTALL(&usart, USART_Receive, IRQ_USART0_RX);

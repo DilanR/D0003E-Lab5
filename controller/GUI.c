@@ -7,13 +7,13 @@ void updateGUI(GUI *self, int *arg) {
 }
 
 void printNorthQueue(GUI *self, int arg) {
-    printAt(arg, 0);
+	printAt(arg, 0);
 }
 
 void printSouthQueue(GUI *self, int arg) {
-    printAt(arg, 4);
+	printAt(arg, 4);
 }
 
 void printCarsOnBridge(GUI *self, int arg) {
-    printAt(arg, 2);
+	printAt(arg, 2);
 }

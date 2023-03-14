@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "USART.h"
+#include "USART_out.h"
 
 
 //TODO: Petition to change structure to just one controller file 
@@ -22,7 +22,7 @@ typedef enum {
 typedef struct controller {
     Object super;
     GUI *gui;
-    USART *usart;
+	USART_out *usart_out;
     int carsOnBridge;
     int queueN;
     int queueS;
@@ -31,12 +31,15 @@ typedef struct controller {
     //int states[3] = {queueN, carsOnBridge, queueS};
 } controller;
 
-#define INITCONTROLLER(gui, usart) {initObject(), gui, usart, 0, 0, 0, both, bothRed}
+#define INITCONTROLLER(gui, usart_out) {initObject(), gui, usart_out, 0, 0, 0, both, bothRed}
 
 bool lightController (controller *self, bool direction);
 void receiveSignal(controller *self, int signal);
 void rmCar (controller *self, int arg);
 void bridgeHandler(controller *self, int arg);
+
+#define RECEIVESIGNAL(cont, signal) ASYNC(cont, receiveSignal, signal)
+
 
 #define northArrival 0
 #define northEntryS  1
