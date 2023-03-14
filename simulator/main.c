@@ -7,6 +7,7 @@ int com1;
 u_int64_t direction;
 u_int64_t queue[3];
 u_int8_t light;
+u_int8_t car; 
 
 sem_t semArrive;
 sem_t semDepart;
@@ -75,10 +76,10 @@ void initSimState(void){
     com1 = open("/dev/ttyACM0", O_RDWR);
 
     if (com1 == -1){
-        perror("open_port: Unable to open /dev/ttyACM0 - ");
-    } else {
-        fcntl(com1, F_SETFL, 0);
-    }
+        printf("open_port: Unable to open /dev/ttyACM0 - ");
+    // } else {
+    //     fcntl(com1, F_SETFL, 0);
+    // }
 
     tcgetattr(com1, &settingsSimState);
 
@@ -95,23 +96,53 @@ void initSimState(void){
     
 }
 
+void writeToPort(int arg){
+    int com1Temp = write(com1, &arg, sizeof(arg));
+
+    if((car & 1) == 1){
+        queue[North]++;
+    }
+    if(((car >> 1) & 1) == 1){
+        queue[North]--;
+    }
+    if(((car >> 2) & 1) == 1){
+        queue[South]++;
+    }
+    if(((car & 3) & 1) == 1){
+        queue[South]--;
+    }
+    if(com1Temp == -1){
+        printf("write_port: Unable to write /dev/ttyACM0 - ");
+    }
+}
+
+
 void *writePort(void *str){
-    write(com1, &str, 1);
+
+    while(1){
+        if(car){
+            pthread_mutex_lock(&mutex);
+            write(com1, &str, sizeof(str));
+            pthread_mutex_unlock(&mutex);
+            car = 0;
+        }
+    }
 }
 
 void *readPort(void *arg){
     
     while(1){
-        
-        read(com1, &light, 1);
-    
-        if(light == 0b1010){
-            light = bothRed;
-        } else if(light == 0b1001){
-            light = northGsouthR;
-        } else if(light == 2){
-            light = southGnorthR;
-            
+        if(!light){
+        pthread_mutex_lock(&mutex);
+        int tempcom1 = read(com1, &light, sizeof(light));
+
+        if(light){
+            printf("Light: %d \n" light)
+        }
+        pthread_mutex_unlock(&mutex);
+        }
+        if(tempcom1 == -1){
+            printf("read_port: Unable to read /dev/ttyACM0 - ");
         }
 
     }
