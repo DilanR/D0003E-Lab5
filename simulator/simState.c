@@ -19,14 +19,12 @@ void simState_init(void){
     cfsetispeed(&settingsSimState, B9600);
     cfsetospeed(&settingsSimState, B9600);
 
-	// settingsSimState.c_cflag &= ~CSIZE; 	// Clear char size
-	// settingsSimState.c_cflag |= CS5;	    // set 5 bit char size
-	// settingsSimState.c_cflag &= ~CSTOPB;    // 1 stop bit
-	// settingsSimState.c_cflag &= ~PARENB;    // no parity
-	// settingsSimState.c_cflag |= CREAD;	    // Enable receive
-	// settingsSimState.c_cc[VMIN] =  1;       // Read at least 1 char
+    settingsSimState.c_cflag   = B9600 | CS8 | CSTOPB | CREAD | CLOCAL | HUPCL | INPCK;
+    settingsSimState.c_lflag &= ~(ECHO | ECHONL | ICANON);
+	tcsetattr(com1, TCSANOW, &settingsSimState);
 
-    lights = bothRed;
+
+    light = bothRed;
     
 }
 
@@ -40,18 +38,16 @@ void *readPort(void *arg){
         
         read(com1, &light, 1);
     
-        if(light == 0){
-            light = 0;
-        } else if(light == 1){
-            light = 1;
+        if(light == 0b1010){
+            light = bothRed;
+        } else if(light == 0b1001){
+            light = northGsouthR;
         } else if(light == 2){
-            light = 2;
-        } else if (light == 3){
-            light = 3;
-        }
+            light = southGnorthR;
             
-    }
+        }
 
+    }
 }
 
 void drive(void* arg){

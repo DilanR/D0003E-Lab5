@@ -13,7 +13,6 @@
 #define CLEAR "\033[2J"
 void initGUI(void);
 void printGUI(void);
-void setting(void);
 void clear_terminal(void);
 
 
