@@ -87,13 +87,14 @@ void clear_terminal(void){
 	printf(CLEAR);
 }
 
-void initSimState(void){
+void initSimState(char * argv[]){
 
     sem_init(&semArrive, 0, 0);
     sem_init(&semDepart, 0, 0);
 
 
-    com1 = open("/dev/bus/usb/001/025", O_RDWR);
+    //com1 = open("/dev/bus/usb/001/025", O_RDWR);
+    com1 = open(argv[1], O_RDWR);
 
     if (com1 == -1){
         printf("open_port: Unable to open /dev/ttyACM0 - ");
@@ -181,7 +182,7 @@ void *letCarsDrive(void* arg) {
 
     while (1) {
         if(light){
-            if((light &) == 1){
+            if((light & 1) == 1){
                 northLight = 1;
             }
             if(((light >> 1) & 1) == 1){
@@ -213,9 +214,9 @@ void *letCarsDrive(void* arg) {
     }
 }
 
-int main() {
+int main(int argc, char *argv[]) {
 
-    initSimState();
+    initSimState(argv);
 
     pthread_t keyboardThread, guiThread, serialInThread, serialOutThread, simThread;
 
