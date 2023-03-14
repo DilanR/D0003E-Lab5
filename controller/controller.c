@@ -47,6 +47,7 @@ void sendSignal (controller *self, int signal) {
     while (!(UCSRA & (1 << UDRE)));
 
 
+    UDR = 0;
     UDR = signal;
 }
 
@@ -70,7 +71,7 @@ void bridgeHandler (controller *self, int arg) {
             
             if (self->lastDirection == south)
 
-                lightController(self, south);    
+                lightController(self, north);    
             
             }
         //TODO: if we we need all red then add else for bothRed here
@@ -82,7 +83,7 @@ void bridgeHandler (controller *self, int arg) {
             
             if (self->lastDirection == north)
 
-                lightController(self, north);    
+                lightController(self, south);    
             
             }
             //TODO: if we we need all red then add else for bothRed here      
@@ -105,11 +106,11 @@ void bridgeHandler (controller *self, int arg) {
 
         //below wont work but its a start need to integrage time support
         else if (self->state == northGreen && self->carsOnBridge == 0) {
-            USARTTRANSMIT(self->usart, south);
+            USARTTRANSMIT(self->usart, southGreen);
         }
 
         else if (self->state == southGreen && self->carsOnBridge == 0) {
-            USARTTRANSMIT(self->usart, north);
+            USARTTRANSMIT(self->usart, northGreen);
         }
 
     }

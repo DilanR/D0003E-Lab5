@@ -181,7 +181,7 @@ void *letCarsDrive(void* arg) {
 
     while (1) {
         if(light){
-            if((light &) == 1){
+            if((light & 1) == 1){
                 northLight = 1;
             }
             if(((light >> 1) & 1) == 1){
