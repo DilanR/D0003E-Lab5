@@ -1,6 +1,7 @@
 #include "include/main.h"
 #include <bits/pthreadtypes.h>
 #include <pthread.h>
+#include <sys/types.h>
 
 int com1;
 
@@ -9,11 +10,13 @@ u_int64_t queue[3];
 u_int8_t light;
 u_int8_t car; 
 
+u_int8_t output, input;
+
 sem_t semArrive;
 sem_t semDepart;
 
 int carsOnBridge;
-pthread_t car;
+pthread_t carT;
 pthread_t mutexState;
 pthread_t mutexId;
 pthread_mutex_t mutex;
@@ -21,13 +24,13 @@ pthread_mutex_t mutex;
 void sendNorth(int arg) {
     printf("north");
     queue[North] += 1;
-    writePort(arg);    
+    writePort(&arg);    
 }
 
 void sendSouth(int arg) {
     printf("south");
     queue[South] += 1;
-    writePort(arg);
+    writePort(&arg);
 }
 
 void *catchInput(void *ptr) {
@@ -73,13 +76,13 @@ void initSimState(void){
     sem_init(&semDepart, 0, 0);
 
 
-    com1 = open("/dev/ttyACM0", O_RDWR);
+    com1 = open("/dev/bus/usb/001/025", O_RDWR);
 
     if (com1 == -1){
         printf("open_port: Unable to open /dev/ttyACM0 - ");
     // } else {
     //     fcntl(com1, F_SETFL, 0);
-    // }
+    }
 
     tcgetattr(com1, &settingsSimState);
 
@@ -96,8 +99,8 @@ void initSimState(void){
     
 }
 
-void writeToPort(int arg){
-    int com1Temp = write(com1, &arg, sizeof(arg));
+void writeToPort(void *arg){
+    int com1Temp = write(com1, &car, sizeof(car));
 
     if((car & 1) == 1){
         queue[North]++;
@@ -117,12 +120,12 @@ void writeToPort(int arg){
 }
 
 
-void *writePort(void *str){
+void *writePort(void *arg){
 
     while(1){
         if(car){
             pthread_mutex_lock(&mutex);
-            write(com1, &str, sizeof(str));
+            write(com1, &car, sizeof(car));
             pthread_mutex_unlock(&mutex);
             car = 0;
         }
@@ -137,11 +140,11 @@ void *readPort(void *arg){
         int tempcom1 = read(com1, &light, sizeof(light));
 
         if(light){
-            printf("Light: %d \n" light)
+            printf("Light: %d \n", light%16);
         }
         pthread_mutex_unlock(&mutex);
         }
-        if(tempcom1 == -1){
+        if(com1 == -1){
             printf("read_port: Unable to read /dev/ttyACM0 - ");
         }
 
@@ -161,17 +164,19 @@ void *letCarsDrive(void* arg) {
     while (1) {
         if (queue[North] > 0 && light == northGsouthR) {
             queue[North]--;
-            pthread_create(&car, NULL, &drive, NULL);
+            pthread_create(&carT, NULL, &drive, NULL);
 
-            writePort(1);
-            sleep(1);
+            car = 0b0010;
+
         } else if (queue[South] > 0 && light == southGnorthR) {
             queue[South]--;
-            pthread_create(&car, NULL, &drive, NULL);
+            pthread_create(&carT, NULL, &drive, NULL);
 
-            writePort(3);
-            sleep(1);
+            car = 0b0100;
+
         }
+        writePort(&car);
+        sleep(1);
     }
 }
 
@@ -187,10 +192,9 @@ int main() {
     pthread_create(&serialOutThread, NULL, &writePort, NULL);
     pthread_create(&simThread, NULL, &letCarsDrive, NULL);
     //int dt = pthread_create(&displayThread, NULL, &print, NULL);
-    while (1);
+    while (1){}
     return 0;
     /*
-    pthread_join(keyboardThread, NULL);
     pthread_join(keyboardThread, NULL);
     pthread_join(keyboardThread, NULL);
     pthread_join(keyboardThread, NULL);
