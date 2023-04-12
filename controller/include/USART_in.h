@@ -18,10 +18,10 @@ typedef struct{
 #define MYUBRR FOSC/16/BAUD-1
 
 void USART_Init(unsigned int ubrr);
-unsigned char USART_Receive(USART_in *self, int arg);
+void USART_Receive(USART_in *self, int arg);
 
 
-#define USARTRECEIVE(usart) SYNC(usart, USART_Receive, 0)
+#define USARTRECEIVE(usart) ASYNC(usart, USART_Receive, 0)
 
 
 #endif

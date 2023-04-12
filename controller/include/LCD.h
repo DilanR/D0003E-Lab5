@@ -7,3 +7,4 @@
 void LCDInit(void);
 void writeChar(char ch, int pos);
 void printAt(long num, int pos);
+void writeLong(long i);
