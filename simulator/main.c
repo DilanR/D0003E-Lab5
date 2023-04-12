@@ -171,11 +171,15 @@ void *readPort(void *arg){
         pthread_mutex_lock(&ioMutex);
         int isRead = read(com1, &signal_in, 1);
         pthread_mutex_unlock(&ioMutex);
+        if (isRead != -1) {
+            printf("reading: %d\n",signal_in);
+        }
 
         
         /*
          * Determine next course of action depending on light status from controller
          */
+
         if (signal_in == (N_GREEN | S_RED)) {
             pthread_mutex_lock(&stateMutex);
             // update state
